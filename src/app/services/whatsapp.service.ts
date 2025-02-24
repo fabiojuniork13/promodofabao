@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class WhatsappService {
 
-  private apiUrl = 'http://177.201.197.63:8090/zap-zap'; // Substitua pela URL da API
+  private apiUrl = 'https://177.201.197.63:8090/zap-zap'; // Substitua pela URL da API
   // private apiUrl = 'http://localhost:8090/zap-zap'; // Substitua pela URL da API
 
   constructor(private http: HttpClient) { }
