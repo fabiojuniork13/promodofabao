@@ -320,8 +320,8 @@ enviarPromoWhats() {
   this.isLoading = true; // Ativa o carregamento
   const enviarWhatsButton = document.getElementById('enviarWhatsButton');
 
-  const destinatario = ['Promoção do Fabin']; 
-  // const destinatario = ['4195737521']; 
+  // const destinatario = ['Promoção do Fabin']; 
+  const destinatario = ['4195737521']; 
   console.log(destinatario);
   console.log(this.forWhats);
 
