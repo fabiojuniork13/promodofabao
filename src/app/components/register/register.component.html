@@ -1,0 +1,97 @@
+<button mat-button class="button_quit" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+</button>
+<br>
+<br>
+<mat-card class="container">
+    <mat-card-header>
+      <mat-card-title>Formatador de Ofertas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field appearance="fill" class="full-width">
+            <textarea matInput placeholder="Insira os dados aqui..." id="input"></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="warn" (click)="limparCampos()">Limpar</button>
+        <p></p>
+        
+        <div class="upload-image-container" 
+            (dragover)="onDragOver($event)" 
+            (drop)="onDrop($event)"
+            (paste)="onPaste($event)">
+
+            <label for="image-upload">Arraste a imagem aqui, clique para selecionar ou use Ctrl + V</label>
+            @if(previewImage) {
+                <p>
+                    <img [src]="previewImage" alt="Imagem selecionada" class="preview-image">
+                </p>
+            }
+            <input type="file" id="image-upload" (change)="onFileSelected($event)" hidden>
+        </div>
+        
+        <br>
+
+        <mat-form-field class="full-width">
+            <mat-label>Selecione o cupom:</mat-label>
+            <mat-select id="comboCupons" [(value)]="cupomSelecionado">
+                @for(cupom of listaCupons; track cupom.cupom) {
+                    <mat-option [value]="cupom.cupom">{{ cupom.cupom }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+            <input matInput id="alerta" placeholder="Insira o alerta (opcional)...">
+        </mat-form-field>
+  
+        <mat-checkbox [(ngModel)]="relampago">Oferta Relâmpago</mat-checkbox>
+        <mat-checkbox [(ngModel)]="pix">No pix</mat-checkbox>
+        <mat-checkbox [(ngModel)]="parcelado">Parcelado</mat-checkbox>
+        <mat-checkbox [(ngModel)]="avista">À vista</mat-checkbox>
+        <mat-checkbox [(ngModel)]="menorPreco">Menor preço</mat-checkbox>
+        <p></p>
+        <mat-checkbox [(ngModel)]="frete">Frete grátis</mat-checkbox>
+        <mat-checkbox [(ngModel)]="fretePrime">Frete PRIME</mat-checkbox>
+        <mat-checkbox [(ngModel)]="freteMeli">Frete Meli+</mat-checkbox>
+        <mat-checkbox [(ngModel)]="freteRetire">Retire loja</mat-checkbox>
+        <mat-checkbox [(ngModel)]="fretePoss">Possibilidade frete</mat-checkbox>
+        <p></p>
+
+        <mat-card id="output"></mat-card>
+        <button mat-raised-button color="primary" (click)="formatarDados()">Formatar</button>
+        <button id="copiarButton" mat-raised-button color="accent" (click)="copiarTexto()" style="display: none;">Copiar</button>
+        <button mat-raised-button color="accent" id="cadastraButton" style="display: none;" (click)="cadastrarPromocao()">Cadastrar Promo</button>
+        @if(!isLoading) {
+            <button mat-raised-button color="accent" id="enviarWhatsButton" style="display: none;" (click)="enviarPromoWhats()">Enviar Promo WhatsApp</button>
+        }
+        @if(isLoading) {
+            <mat-spinner diameter="30" color="accent"></mat-spinner>
+        }
+
+        <br>
+        <div id="mensagem-copiar">Texto copiado para a área de transferência!</div>
+
+        <mat-card id="outputInstagram"></mat-card>
+        <button id="copiarButtonInstagram" mat-raised-button color="accent" (click)="copiarTextoInstagram()" style="display: none;">Copiar</button>
+        <div id="mensagem-copiar-instagram">Texto copiado para a área de transferência!</div>
+  
+        <mat-form-field appearance="fill" class="full-width">
+            <input matInput id="novoCupom" placeholder="Digite o novo cupom">
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+            <input matInput id="mensagemCupom" placeholder="Digite a mensagem do cupom">
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" (click)="adicionarCupom()">Adicionar Cupom</button>
+        <div id="mensagem-cupom" style="display: none;">Cupom adicionado com sucesso!</div>
+        <div id="mensagem-erro" style="display: none;">Ocorreu um erro!</div>
+
+        <p></p>
+  
+        <mat-form-field appearance="fill" class="full-width">
+            <input matInput id="campoLink" placeholder="Insira um link">
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" (click)="tratarLink()">Converter</button>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,96 @@
+<!-- Flag "Entre no grupo" -->
+<br>
+<div class="flag-entre-no-grupo" (click)="entrarNoGrupo()">
+    <img class="whatsapp-icon"> 
+    <span class="vertical-text">Entre no grupo</span>
+</div>
+<div href="/" class="top-bar">
+    <img class="header-image-loja">
+</div>
+<p></p>
+<div class="container">
+    <div class="grid-container">
+        @for(card of cards; track card.id) {
+            <mat-card 
+            class="example-card" 
+            appearance="outlined"
+            style="cursor: pointer;">
+                <mat-card-header (click)="navigateToDetail(card.id)" >
+                    @if(card.marketplace === 'Amazon') {
+                        <div mat-card-avatar class="header-image-amazon"></div>
+                    }
+                    @else if(card.marketplace === 'Shopee') {
+                        <div mat-card-avatar class="header-image-shopee"></div>
+                    }
+                    @else if(card.marketplace === 'Magazine Luiza') {
+                        <div mat-card-avatar class="header-image-magazine"></div>
+                    }
+                    @else if(card.marketplace === 'Mercado Livre') {
+                        <div mat-card-avatar class="header-image-mercado-livre"></div>
+                    }
+                    <div class="header-text">
+                        <div>vendido em</div>
+                        <div><strong>{{card.marketplace}}</strong></div>
+                    </div>
+                    <div class="time-ago">{{ getTimeAgo(card.postedat ? card.postedat.toString() : '') }}</div>
+                    <!-- <mat-card-title>{{ card.title }}</mat-card-title> -->
+                </mat-card-header> 
+                <div class="card-container">
+                    <img (click)="navigateToDetail(card.id)" class="mat-card-image" [src]="card.image" alt="{{ card.title }}">
+                </div>
+                <mat-card-subtitle (click)="navigateToDetail(card.id)">{{ card.subtitle }}</mat-card-subtitle>
+                <mat-card-content (click)="navigateToDetail(card.id)" >
+                    <div class="preco-container">
+                        <p></p>
+                        @if(card.oldprice !== '') {
+                            <p class="label">De:</p>
+                            <p class="preco-antigo"><s>{{ card.oldprice }}</s></p>
+                        }
+                        <p class="label">Por:</p>
+                        <p class="preco-novo">{{ card.newprice }}</p>
+                        @if(card.paymentmethod !== '') {
+                            <p class="pagamento">{{ card.paymentmethod }}</p>
+                        }
+                        @if(card.alert !== '') {
+                            <div class="alerta">
+                                <mat-icon>warning</mat-icon>
+                                {{ card.alert }}
+                            </div>
+                        }
+                    </div>
+                </mat-card-content>
+                @if(card.coupon !== "") {
+                    <mat-card-actions class="cupom-container">
+                        <div class="cupom-content">
+                            <div class="cupom-text">
+                                <span class="cupom-label">cupom de desconto:</span>
+                                <strong class="cupom-code">{{card.coupon}}</strong>
+                            </div>
+                            <div mat-button class="copy-button" (click)="copiarCupom(card.coupon || '')">
+                                <div class="copy-content">
+                                    <mat-icon>{{ isCopied ? 'check' : 'content_copy' }}</mat-icon>
+                                    <span> {{ isCopied ? 'Copiado' : 'Copiar' }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                }
+                <mat-card-actions>
+                    @if(card.coupon !== "") {
+                        <button mat-button (click)="openDiscountDialog(card)">
+                            <span>PEGAR PROMOÇÃO</span>
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                    }
+                    @else {
+                        <button mat-button (click)="openLink(card.link)">
+                            <span>PEGAR PROMOÇÃO</span>
+                            <mat-icon>open_in_new</mat-icon>
+                        </button>
+                    }
+                </mat-card-actions>
+                <div class="rodape-text">Esta promoção pode acabar a qualquer momento!</div>
+            </mat-card>
+        }
+    </div>
+</div>

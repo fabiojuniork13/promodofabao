@@ -1,0 +1,16 @@
+.style {
+    background-color: rgb(219, 95, 49);
+}
+
+.toolbar {
+    align-items: center;
+    text-align: center;
+    font-size: 35px;
+}
+
+.full-height-background, body {
+    background: linear-gradient(to right, #ff6a00, #ee0979); /* Exemplo de gradiente */
+    min-height: 100vh; /* Garante que cubra toda a altura da tela */
+    margin: 0;
+    padding: 0;
+}

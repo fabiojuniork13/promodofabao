@@ -1,0 +1,37 @@
+<mat-dialog-content class="dialog-container">
+    <mat-card-header class="card-header">
+        <img class="image" [src]="card.image" alt="Imagem do avatar">
+        <div class="header-text">
+            <h2 [ngClass]="getFontClass(card.subtitle)">
+                {{ card.subtitle }}
+            </h2>
+        </div>
+    </mat-card-header>
+    <br>
+    <mat-divider class="divider"></mat-divider>
+    <br>
+    <p class="attention">Atenção!</p>
+    <p class="text-cupom">Necessário uso do cupom!</p>
+    <p class="instruction"><strong>Passo a Passo!</strong></p>
+    <p>Você pode inserir o cupom no campo disponível no carrinho ou na página de pagamento.</p>
+    <mat-card-actions class="cupom-container">
+        <div class="cupom-content">
+            <div class="cupom-text">
+                <span class="cupom-label">cupom de desconto:</span>
+                <strong class="cupom-code">{{card.coupon}}</strong>
+            </div>
+            <div mat-button class="copy-button" (click)="copiarCupom(card.coupon || '')">
+                <div class="copy-content">
+                    <mat-icon>{{ isCopied ? 'check' : 'content_copy' }}</mat-icon>
+                    <span> {{ isCopied ? 'Copiado' : 'Copiar' }} </span>
+                </div>
+            </div>
+        </div>
+        <p></p>
+        <button mat-button (click)="openLink(card.link)">
+            <span>PEGAR PROMOÇÃO</span>
+            <mat-icon>open_in_new</mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-dialog-content>
+  

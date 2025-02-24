@@ -1,0 +1,68 @@
+.header-image-loja {
+    background-image: url('../../../assets/promodofabin.jpg');
+    background-size: cover;
+  }
+  
+  .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      background-color: #0a0d14;
+  }
+    
+    .login-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 360px;
+      text-align: center;
+    }
+    
+    .logo {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+    
+    h2 {
+      margin-bottom: 10px;
+    }
+    
+    mat-form-field {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    .forgot-password {
+      display: block;
+      text-align: right;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #007bff;
+    }
+    
+    .full-width {
+      width: 100%;
+    }
+    
+    .google-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .google-icon {
+      width: 20px;
+    }
+    
+    .separator {
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    
+    .signup {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    
