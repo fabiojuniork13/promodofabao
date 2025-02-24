@@ -325,8 +325,16 @@ enviarPromoWhats() {
   console.log(destinatario);
   console.log(this.forWhats);
 
+  let img: any;
+
+  if(this.enviarImg && this.imageBase64) {
+    img = this.imageBase64;
+  } else {
+    img = '';
+  }
+
   if (this.forWhats) {
-    this.whatsappService.enviarDados(destinatario, this.forWhats, this.imageBase64).subscribe(
+    this.whatsappService.enviarDados(destinatario, this.forWhats, img).subscribe(
       (response) => {
         this.isLoading = false;
         enviarWhatsButton!.style.display = 'flex';
@@ -415,6 +423,7 @@ convertImageToBase64(file: File): Promise<string> {
     this.freteRetire = false;
     this.fretePoss = false;
     this.enviarImg = false;
+    this.imageBase64 = undefined;
     
     this.forWhats = '';
 
