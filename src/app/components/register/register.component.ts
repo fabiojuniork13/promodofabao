@@ -55,6 +55,8 @@ export class RegisterComponent {
   freteMeli: boolean = false;
   freteRetire: boolean = false;
   fretePoss: boolean = false;
+  enviarImg: boolean = false;
+  imageBase64: string | undefined;
 
   formData!: FormData;
 
@@ -286,7 +288,7 @@ export class RegisterComponent {
         if (result.success) {
             const novoIdPromo = result.id;
             const novaMensagem = this.forWhats;
-            this.forWhats = this.modificarMensagem(novaMensagem, 'https://promocoesdofabin.com/card/' + novoIdPromo);
+            this.forWhats = this.modificarMensagem(novaMensagem, 'https://promodofabin.netlify.app/card/' + novoIdPromo);
             console.log(this.forWhats);
             this.snackBar.open('Promoção cadastrada com sucesso! ✅', 'Fechar', {
                 duration: 3000,
@@ -312,30 +314,6 @@ modificarMensagem(mensagem: string, conteudo: string): string {
     .join('\n'); // Junta as linhas de volta
 }
 
-// enviarPromoWhats() {
-//   const destinatario = ['4195737521'];
-//   console.log(destinatario);
-//   console.log(this.forWhats);
-//   if(this.forWhats) {
-//     this.whatsappService.enviarDados(destinatario, this.forWhats).subscribe(
-//       (response) => {
-//         console.log('Resposta do servidor:', response);
-//         this.snackBar.open('Promoção enviada com sucesso! ✅', 'Fechar', {
-//           duration: 3000,
-//           panelClass: ['success-snackbar']
-//         });
-//       },
-//       (error) => {
-//         console.error('Erro ao enviar dados:', error);
-//         this.snackBar.open('Erro ao enviar a promoção. 🚨', 'Fechar', {
-//           duration: 3000,
-//           panelClass: ['error-snackbar']
-//       });
-//       }
-//     );
-//   }
-// }
-
 isLoading = false;
 
 enviarPromoWhats() {
@@ -343,11 +321,12 @@ enviarPromoWhats() {
   const enviarWhatsButton = document.getElementById('enviarWhatsButton');
 
   const destinatario = ['Promoção do Fabin']; 
+  // const destinatario = ['4195737521']; 
   console.log(destinatario);
   console.log(this.forWhats);
 
   if (this.forWhats) {
-    this.whatsappService.enviarDados(destinatario, this.forWhats).subscribe(
+    this.whatsappService.enviarDados(destinatario, this.forWhats, this.imageBase64).subscribe(
       (response) => {
         this.isLoading = false;
         enviarWhatsButton!.style.display = 'flex';
@@ -370,6 +349,20 @@ enviarPromoWhats() {
   } else {
     this.isLoading = false; // Caso não haja dados, encerra o carregamento
   }
+}
+
+// Método para converter a imagem em Base64
+convertImageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      // Remove o prefixo "data:image/png;base64," da string
+      const base64 = (reader.result as string).split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = error => reject(error);
+  });
 }
 
   copiarTexto(): void {
@@ -421,6 +414,7 @@ enviarPromoWhats() {
     this.freteMeli = false;
     this.freteRetire = false;
     this.fretePoss = false;
+    this.enviarImg = false;
     
     this.forWhats = '';
 
@@ -523,6 +517,13 @@ enviarPromoWhats() {
         this.previewImage = e.target.result;
     };
     reader.readAsDataURL(file);
+
+    this.convertImageToBase64(file).then((base64: string) => {
+      this.imageBase64 = base64; // Armazena a imagem convertida
+      console.log('Imagem em Base64:', this.imageBase64);
+    }).catch(error => {
+      console.error('Erro ao converter a imagem:', error);
+    });
   }
 
   // Faz o upload apenas quando chamar essa função (ex: ao cadastrar a promoção)

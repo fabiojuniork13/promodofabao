@@ -8,16 +8,17 @@ import { Observable } from 'rxjs';
 export class WhatsappService {
 
   private apiUrl = 'http://177.201.197.63:8090/zap-zap'; // Substitua pela URL da API
+  // private apiUrl = 'http://localhost:8090/zap-zap'; // Substitua pela URL da API
 
   constructor(private http: HttpClient) { }
 
-  enviarDados(destinatario: any, conteudo: any): Observable<any> {
+  enviarDados(destinatario: any, conteudo: any, imagemB64: any): Observable<any> {
     console.log(destinatario);
     console.log(conteudo);
     const dados = {
       contatos: destinatario,
       conteudo: conteudo,
-      imagem: ""
+      imagem: imagemB64
     };
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
