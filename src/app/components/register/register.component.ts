@@ -316,48 +316,109 @@ modificarMensagem(mensagem: string, conteudo: string): string {
 
 isLoading = false;
 
+// enviarPromoWhats() {
+//   this.isLoading = true; // Ativa o carregamento
+//   const enviarWhatsButton = document.getElementById('enviarWhatsButton');
+
+//   // const destinatario = ['Promoção do Fabin']; 
+//   const destinatario = ['4195737521']; 
+//   console.log(destinatario);
+//   console.log(this.forWhats);
+
+//   let img: any;
+
+//   if(this.enviarImg && this.imageBase64) {
+//     img = this.imageBase64;
+//   } else {
+//     img = '';
+//   }
+
+//   if (this.forWhats) {
+//     this.whatsappService.enviarDados(destinatario, this.forWhats, img).subscribe(
+//       (response) => {
+//         this.isLoading = false;
+//         enviarWhatsButton!.style.display = 'flex';
+//         console.log('Resposta do servidor:', response);
+//         this.snackBar.open('Promoção enviada com sucesso! ✅', 'Fechar', {
+//           duration: 3000,
+//           panelClass: ['success-snackbar']
+//         });
+//       },
+//       (error) => {
+//         this.isLoading = false;
+//         enviarWhatsButton!.style.display = 'flex';
+//         console.error('Erro ao enviar dados:', error);
+//         this.snackBar.open('Erro ao enviar a promoção. 🚨', 'Fechar', {
+//           duration: 3000,
+//           panelClass: ['error-snackbar']
+//         });
+//       }
+//     );
+//   } else {
+//     this.isLoading = false; // Caso não haja dados, encerra o carregamento
+//   }
+// }
+
 enviarPromoWhats() {
   this.isLoading = true; // Ativa o carregamento
   const enviarWhatsButton = document.getElementById('enviarWhatsButton');
 
-  // const destinatario = ['Promoção do Fabin']; 
-  const destinatario = ['4195737521']; 
+  // Definindo destinatários e conteúdo
+  const destinatario = ['Promoção do Fabin']; // Exemplo de destinatário
   console.log(destinatario);
   console.log(this.forWhats);
 
   let img: any;
 
-  if(this.enviarImg && this.imageBase64) {
+  // Verificar se há uma imagem
+  if (this.enviarImg && this.imageBase64) {
     img = this.imageBase64;
   } else {
-    img = '';
+    img = ''; // Se não houver imagem, setar vazio
   }
 
+  // Verifica se há conteúdo para enviar
   if (this.forWhats) {
-    this.whatsappService.enviarDados(destinatario, this.forWhats, img).subscribe(
-      (response) => {
-        this.isLoading = false;
-        enviarWhatsButton!.style.display = 'flex';
-        console.log('Resposta do servidor:', response);
-        this.snackBar.open('Promoção enviada com sucesso! ✅', 'Fechar', {
+    // Preparar o corpo da requisição para o Supabase
+    const messageData = {
+      destinatario: destinatario[0], // Destinatário (podemos usar apenas um número aqui)
+      conteudo: this.forWhats, // Conteúdo da mensagem
+      image: img, // Imagem (se houver)
+      status: 'pendente', // Status inicial da mensagem (ex: pendente)
+    };
+
+    // Inserir os dados na tabela 'tbgen_messages' no Supabase
+    this.supabaseService.insertMessage(messageData).then((result) => {
+      this.isLoading = false;
+      enviarWhatsButton!.style.display = 'flex';
+
+      if (result.success) {
+        console.log('Mensagem registrada com sucesso! ID:', result.id);
+        this.snackBar.open('Promoção registrada com sucesso! ✅', 'Fechar', {
           duration: 3000,
-          panelClass: ['success-snackbar']
+          panelClass: ['success-snackbar'],
         });
-      },
-      (error) => {
-        this.isLoading = false;
-        enviarWhatsButton!.style.display = 'flex';
-        console.error('Erro ao enviar dados:', error);
-        this.snackBar.open('Erro ao enviar a promoção. 🚨', 'Fechar', {
+      } else {
+        console.error('Erro ao registrar mensagem:', result.message);
+        this.snackBar.open('Erro ao registrar a promoção. 🚨', 'Fechar', {
           duration: 3000,
-          panelClass: ['error-snackbar']
+          panelClass: ['error-snackbar'],
         });
       }
-    );
+    }).catch((error: any) => {
+      this.isLoading = false;
+      enviarWhatsButton!.style.display = 'flex';
+      console.error('Erro ao enviar dados:', error);
+      this.snackBar.open('Erro ao registrar a promoção. 🚨', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+    });
   } else {
     this.isLoading = false; // Caso não haja dados, encerra o carregamento
   }
 }
+
 
 // Método para converter a imagem em Base64
 convertImageToBase64(file: File): Promise<string> {

@@ -8,6 +8,7 @@ import { Promocao } from '../../models/promocao.model';
 import { MatDialog } from '@angular/material/dialog';
 import { isPlatformBrowser } from '@angular/common';
 import { DiscountDialogComponent } from '../discount-dialog/discount-dialog.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,8 @@ export class HomeComponent {
     private router: Router, 
     private supabaseService: SupabaseService, 
     private cdr: ChangeDetectorRef, 
-    private dialog: MatDialog) {}
+    private dialog: MatDialog,
+    private title: Title) {}
 
   cards: Promocao[] = [];
   isCopied: boolean = false;
@@ -33,6 +35,7 @@ export class HomeComponent {
   todasCarregadas = false; // Flag para saber se todas as promoções foram carregadas
 
   async ngOnInit() {
+    this.title.setTitle("PROMO DO FABIN")
     if (isPlatformBrowser(this.platformId)) {
       this.supabaseService.getPromocoes(this.limit, this.offset).then(promocoes => {
         this.cards = promocoes;

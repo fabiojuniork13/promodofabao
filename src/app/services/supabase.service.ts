@@ -59,6 +59,33 @@ export class SupabaseService {
     }
 }
 
+async insertMessage(data: any) {
+  try {
+    // Remover o campo 'id' caso já esteja presente no objeto
+    delete data.id;
+
+    // Inserção na tabela 'tbgen_messages'
+    const { data: insertedData, error } = await this.supabase
+      .from('tbgen_messages')
+      .insert([data])
+      .select('id') // Retorna o ID da mensagem inserida
+      .single(); // Garante que a resposta seja um objeto único
+
+    // Se houver erro, retorna a mensagem de erro
+    if (error) {
+      console.error('Erro ao inserir mensagem:', error.message);
+      return { success: false, message: error.message };
+    }
+
+    // Retorna o ID da mensagem inserida
+    return { success: true, id: insertedData.id };
+
+  } catch (error) {
+    console.error('Erro inesperado ao inserir mensagem:', error);
+    return { success: false, message: 'Erro inesperado ao inserir mensagem.' };
+  }
+}
+
   async uploadImage(file: File): Promise<string | null> {
     try {
       const filePath = `images/${Date.now()}-${file.name}`;
