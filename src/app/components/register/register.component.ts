@@ -262,7 +262,7 @@ export class RegisterComponent {
         marketplace = 'Amazon';
     } else if (link.includes('mercadolivre')) {
         marketplace = 'Mercado Livre';
-    } else if (link.includes('magazineluiza')) {
+    } else if (link.includes('magazineluiza') || link.includes('magazine')) {
         marketplace = 'Magazine Luiza';
     } else {
         marketplace = 'Desconhecido';
