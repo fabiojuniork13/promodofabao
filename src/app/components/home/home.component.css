@@ -148,13 +148,16 @@ mat-card-actions {
 }
 
 .mat-card-image {
-    border: 3px solid white; /* Borda branca */
-    border-radius: 8px; /* Cantos arredondados */
-    padding: 4px; /* Espaçamento interno para destacar a borda */
-    background-color: white; /* Garante que a borda branca seja visível */
-    width: 250px;
-    height: 250px;
-}
+    border: 3px solid white;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: white;
+    max-width: 250px; /* Define um tamanho máximo */
+    max-height: 250px; /* Define um tamanho máximo */
+    width: auto; /* Mantém a proporção */
+    height: auto; /* Mantém a proporção */
+    object-fit: contain; /* Ajusta a imagem dentro do container sem cortar */
+  }
 
 mat-card-actions button {
     width: 100%; /* Faz o botão ocupar toda a largura do card */
