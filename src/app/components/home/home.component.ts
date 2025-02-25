@@ -71,7 +71,7 @@ export class HomeComponent {
 
   getTimeAgo(postedAt: string): string {
     const now = new Date();
-    const postedDate = new Date(postedAt);
+    const postedDate = new Date(postedAt + "Z");
     const diffInSeconds = Math.floor((now.getTime() - postedDate.getTime()) / 1000);
     
     const minutes = Math.floor(diffInSeconds / 60);
