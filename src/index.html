@@ -3,46 +3,13 @@
 <head>
   <meta charset="utf-8">
   <title>PROMO DO FABIN</title>
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Carregando...">
-  <meta property="og:title" content="Carregando...">
-  <meta property="og:description" content="Carregando...">
-  <meta property="og:image" content="default.jpg">
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Simula carregamento dinâmico dos dados
-      setTimeout(() => {
-        const newTitle = "Promoção Especial do Fabin!";
-        const newDescription = "As melhores ofertas em um só lugar!";
-        const newImage = "https://seusite.com/imagem.jpg";
-
-        // Atualiza o título da página
-        document.title = newTitle;
-
-        // Atualiza as meta tags
-        function updateMeta(property, content) {
-          let tag = document.querySelector(`meta[property='${property}']`);
-          if (!tag) {
-            tag = document.createElement('meta');
-            tag.setAttribute('property', property);
-            document.head.appendChild(tag);
-          }
-          tag.setAttribute('content', content);
-        }
-
-        updateMeta("og:title", newTitle);
-        updateMeta("og:description", newDescription);
-        updateMeta("og:image", newImage);
-
-        console.log("Meta tags atualizadas dinamicamente!");
-      }, 2000); // Simula um delay de carregamento
-    });
-  </script>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-
-  <body class="mat-typography">
-    <app-root></app-root>
-  </body>
-
+<body class="mat-typography">
+  <app-root></app-root>
+</body>
 </html>
