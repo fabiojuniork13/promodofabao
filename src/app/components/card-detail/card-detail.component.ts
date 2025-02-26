@@ -110,16 +110,16 @@ export class CardDetailComponent {
 
   loadCardData(): void {
     // Atualize as meta tags
-    this.meta.updateTag({ property: 'og:title', content: this.card.title });
-    this.meta.updateTag({ property: 'og:description', content: this.card.subtitle });
-    this.meta.updateTag({ property: 'og:image', content: this.card.image });
-    this.meta.updateTag({ property: 'og:image:width', content: '350' });
-    this.meta.updateTag({ property: 'og:image:height', content: '330' });
-    this.meta.updateTag({ property: 'og:url', content: window.location.href });
+    this.meta.addTag({ property: 'og:title', content: this.card.title });
+    this.meta.addTag({ property: 'og:description', content: this.card.subtitle });
+    this.meta.addTag({ property: 'og:image', content: this.card.image });
+    this.meta.addTag({ property: 'og:image:width', content: '350' });
+    this.meta.addTag({ property: 'og:image:height', content: '330' });
+    this.meta.addTag({ property: 'og:url', content: window.location.href });
 
     // Para o WhatsApp, você pode usar o mesmo conteúdo ou personalizar
-    this.meta.updateTag({ property: 'twitter:title', content: this.card.title });
-    this.meta.updateTag({ property: 'twitter:description', content: this.card.subtitle });
-    this.meta.updateTag({ property: 'twitter:image', content: this.card.image });
+    this.meta.addTag({ property: 'twitter:title', content: this.card.title });
+    this.meta.addTag({ property: 'twitter:description', content: this.card.subtitle });
+    this.meta.addTag({ property: 'twitter:image', content: this.card.image });
   }
 }
