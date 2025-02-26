@@ -394,13 +394,13 @@ enviarPromoWhats() {
 
       if (result.success) {
         console.log('Mensagem registrada com sucesso! ID:', result.id);
-        this.snackBar.open('Promoção registrada com sucesso! ✅', 'Fechar', {
+        this.snackBar.open('Promoção enviada com sucesso! ✅', 'Fechar', {
           duration: 3000,
           panelClass: ['success-snackbar'],
         });
       } else {
         console.error('Erro ao registrar mensagem:', result.message);
-        this.snackBar.open('Erro ao registrar a promoção. 🚨', 'Fechar', {
+        this.snackBar.open('Erro ao enviar a promoção. 🚨', 'Fechar', {
           duration: 3000,
           panelClass: ['error-snackbar'],
         });
@@ -409,7 +409,7 @@ enviarPromoWhats() {
       this.isLoading = false;
       enviarWhatsButton!.style.display = 'flex';
       console.error('Erro ao enviar dados:', error);
-      this.snackBar.open('Erro ao registrar a promoção. 🚨', 'Fechar', {
+      this.snackBar.open('Erro ao enviar a promoção. 🚨', 'Fechar', {
         duration: 3000,
         panelClass: ['error-snackbar'],
       });
@@ -517,19 +517,40 @@ convertImageToBase64(file: File): Promise<string> {
 
   formatarPreco(preco: string): string {
     let valor = preco.replace(/R\$\s?/g, '').replace('-', '').trim();
-    valor = valor.replace(/\./g, '');
-    if (valor.includes(',')) {
-      let partes = valor.split(',');
-      let inteiro = partes[0];
-      let decimal = partes[1];
-      if (/^\d+$/.test(inteiro) && /^\d{2}$/.test(decimal)) {
-        valor = `${inteiro},${decimal}`;
+
+    if (/^\d+\.\d{2}$/.test(valor)) {
+      valor = valor.replace('.', ',');
+      if (valor.includes(',')) {
+        let partes = valor.split(',');
+        let inteiro = partes[0];
+        let decimal = partes[1];
+        if (/^\d+$/.test(inteiro) && /^\d{2}$/.test(decimal)) {
+          inteiro = parseInt(inteiro, 10).toLocaleString('pt-BR');
+          valor = `${inteiro},${decimal}`;
+        }
+      } else {
+        valor = parseFloat(valor).toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
       }
     } else {
-      valor = parseFloat(valor).toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
+      valor = valor.replace(/\./g, '');
+      if (valor.includes(',')) {
+        let partes = valor.split(',');
+        let inteiro = partes[0];
+        let decimal = partes[1];
+
+        if (/^\d+$/.test(inteiro) && /^\d{2}$/.test(decimal)) {
+          inteiro = parseInt(inteiro, 10).toLocaleString('pt-BR');
+          valor = `${inteiro},${decimal}`;
+        }
+      } else {
+        valor = parseFloat(valor).toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
     }
     return `R$ ${valor}`;
   }
