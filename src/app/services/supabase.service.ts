@@ -59,6 +59,26 @@ export class SupabaseService {
     }
 }
 
+async deletePromo(id: number) {
+  try {
+      const { error } = await this.supabase
+          .from('tbgen_promocoes')
+          .delete()
+          .eq('id', id);
+
+      if (error) {
+          console.error('Erro ao deletar promoção:', error.message);
+          return { success: false, message: error.message };
+      }
+
+      return { success: true, message: 'Promoção deletada com sucesso.' };
+
+  } catch (e) {
+      console.error('Erro inesperado:', e);
+      return { success: false, message: 'Erro inesperado ao deletar promoção.' };
+  }
+}
+
 async insertMessage(data: any) {
   try {
     // Remover o campo 'id' caso já esteja presente no objeto

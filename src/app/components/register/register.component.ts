@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { WhatsappService } from '../../services/whatsapp.service';
 import { style } from '@angular/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -43,7 +45,7 @@ export class RegisterComponent {
   constructor(private supabaseService: SupabaseService, 
               private snackBar: MatSnackBar, 
               private router: Router,
-              private whatsappService: WhatsappService) {}
+              private dialog: MatDialog) {}
 
   frete: boolean = false;
   relampago: boolean = false;
@@ -636,4 +638,83 @@ convertImageToBase64(file: File): Promise<string> {
     this.router.navigate(['/login']);
   }
 
+  // deletarPromo() {
+  //   const campoId = (document.getElementById('deletePromo') as HTMLInputElement).value;
+    
+  //   if (campoId) {
+  //       const id = parseInt(campoId, 10); // Converte para número
+        
+  //       if (!isNaN(id)) {
+  //           this.supabaseService.deletePromo(id).then(response => {
+  //             if (response.success) {
+  //               this.snackBar.open('Promoção removida com sucesso! ✅', 'Fechar', {
+  //                 duration: 3000,
+  //                 panelClass: ['success-snackbar'],
+  //               });
+  //             } else {
+  //               this.snackBar.open('Erro ao remover a promoção. 🚨', 'Fechar', {
+  //                 duration: 3000,
+  //                 panelClass: ['error-snackbar'],
+  //               });
+  //             }
+  //           });
+  //       } else {
+  //         this.snackBar.open('Id inválido. 🚨', 'Fechar', {
+  //           duration: 3000,
+  //           panelClass: ['error-snackbar'],
+  //         });
+  //       }
+  //   } else {
+  //     this.snackBar.open('Campo Id vazio. 🚨', 'Fechar', {
+  //       duration: 3000,
+  //       panelClass: ['error-snackbar'],
+  //     });
+  //   }
+  // }
+
+  deletarPromo() {
+    const campoId = (document.getElementById('deletePromo') as HTMLInputElement).value;
+
+    if (!campoId) {
+      this.snackBar.open('Campo Id vazio. 🚨', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+      return;
+    }
+
+    const id = parseInt(campoId, 10);
+    if (isNaN(id)) {
+      this.snackBar.open('Id inválido. 🚨', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+      return;
+    }
+
+    // Abre o diálogo de confirmação
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Tem certeza que deseja remover a promoção com ID ${id}?` },
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // Se o usuário confirmar, chama o serviço para deletar
+        this.supabaseService.deletePromo(id).then(response => {
+          if (response.success) {
+            this.snackBar.open('Promoção removida com sucesso! ✅', 'Fechar', {
+                duration: 3000,
+                panelClass: ['success-snackbar'],
+              });
+            } else {
+              this.snackBar.open('Erro ao remover a promoção. 🚨', 'Fechar', {
+                duration: 3000,
+                panelClass: ['error-snackbar'],
+              });
+            }
+        });
+      }
+    });
+  }
 }

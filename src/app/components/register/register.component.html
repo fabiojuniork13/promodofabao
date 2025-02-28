@@ -95,5 +95,14 @@
         </mat-form-field>
   
         <button mat-raised-button color="primary" (click)="tratarLink()">Converter</button>
+
+        <p></p>
+
+        <mat-form-field appearance="fill" class="full-width">
+            <input matInput id="deletePromo" placeholder="Insira o Id para remover">
+        </mat-form-field>
+          
+         <button mat-raised-button color="warn" (click)="deletarPromo()">Remover</button>
+
     </mat-card-content>
 </mat-card>

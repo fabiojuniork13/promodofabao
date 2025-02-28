@@ -1,0 +1,51 @@
+/* Estilização do título */
+h2 {
+    color: #d32f2f; /* Vermelho Material Design */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilização do conteúdo */
+  mat-dialog-content {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 20px;
+  }
+  
+  /* Ajuste dos botões */
+  mat-dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+  }
+  
+  /* Botão "Não" */
+  button[mat-button] {
+    color: #616161; /* Cinza Material Design */
+    font-weight: bold;
+  }
+  
+  /* Botão "Sim" */
+  button[mat-raised-button] {
+    background-color: #d32f2f; /* Vermelho Material Design */
+    color: white;
+    font-weight: bold;
+  }
+  
+  button[mat-raised-button]:hover {
+    background-color: #b71c1c; /* Vermelho mais escuro */
+  }
+  
+  /* Responsividade */
+  @media (max-width: 400px) {
+    mat-dialog-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
