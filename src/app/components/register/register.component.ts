@@ -266,7 +266,12 @@ export class RegisterComponent {
         marketplace = 'Mercado Livre';
     } else if (link.includes('magazineluiza') || link.includes('magazine')) {
         marketplace = 'Magazine Luiza';
-    } else {
+    } else if (link.includes('kabum')) {
+      marketplace = 'Kabum';
+    } else if (link.includes('decathlon')) {
+      marketplace = 'Decathlon';
+    }
+    else {
         marketplace = 'Desconhecido';
     }
 

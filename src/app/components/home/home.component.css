@@ -26,6 +26,16 @@
     background-size: cover;
 }
 
+.header-image-kabum {
+    background-image: url('../../../assets/kabum.jpeg');
+    background-size: cover;
+}
+
+.header-image-decathlon {
+    background-image: url('../../../assets/decathlon.png');
+    background-size: cover;
+}
+
 .flag-entre-no-grupo {
     top: 50%;
     left: 0;
