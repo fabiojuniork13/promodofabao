@@ -66,6 +66,6 @@ export default async (request: Request, context: Context): Promise<Response> => 
   }
 
   // Para usuários normais, redireciona para o componente (ou página da aplicação)
-  const redirectUrl = `/card/${id}`; // Aqui você define o caminho para o seu componente na aplicação SPA
+  const redirectUrl = `https://promodofabin.netlify.app/card/${id}`; // Aqui você define o caminho para o seu componente na aplicação SPA
   return Response.redirect(redirectUrl, 302); // Realiza o redirecionamento
 };
