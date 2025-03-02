@@ -6,10 +6,19 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Função para verificar se é um navegador ou bot
+const isBot = (userAgent: string): boolean => {
+  const bots = /bot|crawl|spider|facebook|whatsapp|twitter|linkedin/i;
+  return bots.test(userAgent);
+};
+
 export default async (request: Request, context: Context): Promise<Response> => {
   const url = new URL(request.url);
   const pathSegments = url.pathname.split("/");
   const id = pathSegments[pathSegments.length - 1];
+
+  const userAgent = request.headers.get("User-Agent") || "";
+  const isCrawler = isBot(userAgent);
 
   let title = "Meu Site";
   let description = "Descrição padrão do site.";
@@ -29,26 +38,33 @@ export default async (request: Request, context: Context): Promise<Response> => 
     }
   }
 
-  return new Response(`
-    <!DOCTYPE html>
-    <html lang="pt">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${title}</title>
-      <meta property="og:title" content="${title}">
-      <meta property="og:description" content="${description}">
-      <meta property="og:image" content="${image}">
-      <meta property="og:type" content="website">
-      <meta property="og:url" content="${url.href}">
-    </head>
-    <body>
-      <h1>${title}</h1>
-      <p>${description}</p>
-      <img src="${image}" alt="Imagem de ${title}">
-    </body>
-    </html>
-  `, {
-    headers: { "Content-Type": "text/html" }
-  });
+  // Se for um bot ou crawler, renderiza HTML SEO
+  if (isCrawler) {
+    return new Response(`
+      <!DOCTYPE html>
+      <html lang="pt">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${title}</title>
+        <meta property="og:title" content="${title}">
+        <meta property="og:description" content="${description}">
+        <meta property="og:image" content="${image}">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="${url.href}">
+      </head>
+      <body>
+        <h1>${title}</h1>
+        <p>${description}</p>
+        <img src="${image}" alt="Imagem de ${title}">
+      </body>
+      </html>
+    `, {
+      headers: { "Content-Type": "text/html" }
+    });
+  }
+
+  // Para usuários normais, redireciona para o componente (ou página da aplicação)
+  const redirectUrl = `/app/${id}`; // Aqui você define o caminho para o seu componente na aplicação SPA
+  return Response.redirect(redirectUrl, 302); // Realiza o redirecionamento
 };
