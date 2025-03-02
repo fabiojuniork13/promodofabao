@@ -2,10 +2,6 @@
   command = "ng build --configuration production"
   publish = "dist/web/browser"
 
-[[edge_functions]]
-  path = "/card/*"
-  function = "meta-tags"
-
 [[redirects]]
   from = "/*"
   to = "/index.html"
