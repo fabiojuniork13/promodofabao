@@ -1,63 +1,54 @@
-import { Context } from '@netlify/edge-functions'
+import { createClient } from "@supabase/supabase-js";
+import type { Context } from "@netlify/edge-functions";
 
-export default async (request: Request, context: Context) => {
-  const url = new URL(request.url)
+const SUPABASE_URL = "https://wnbnymobuaogqqnjnoby.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduYm55bW9idWFvZ3Fxbmpub2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgzNDA2ODksImV4cCI6MjA1MzkxNjY4OX0.zAijMlOQwO5T91ssml7ebNLpdfTsjxjX7xrv4zRNHZM";
 
-  // Checa se é um bot (Googlebot, Facebook, Twitter, etc.)
-  const userAgent = request.headers.get("user-agent") || "";
-  const isBot = /bot|crawl|spider|facebook|whatsapp|twitter|linkedin/i.test(userAgent);
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  if (isBot) {
-    // ID do produto (exemplo: /produto/123)
-    const match = url.pathname.match(/\/produto\/(\d+)/);
-    if (match) {
-      const productId = match[1];
+export default async (request: Request, context: Context): Promise<Response> => {
+  const url = new URL(request.url);
+  const pathSegments = url.pathname.split("/");
+  const id = pathSegments[pathSegments.length - 1];
 
-      // Busca o produto no Supabase
-      const { data, error } = await fetchProductFromSupabase(productId);
+  let title = "Meu Site";
+  let description = "Descrição padrão do site.";
+  let image = "https://seusite.com/default.jpg";
 
-      if (!error && data) {
-        // Retorna HTML renderizado com SEO
-        return new Response(`
-          <!DOCTYPE html>
-          <html lang="pt-BR">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>${data.titulo}</title>
-            <meta name="description" content="${data.descricao}">
-            <meta property="og:title" content="${data.titulo}">
-            <meta property="og:description" content="${data.descricao}">
-            <meta property="og:image" content="${data.imagem}">
-            <meta property="og:url" content="${url.href}">
-          </head>
-          <body>
-            <h1>${data.titulo}</h1>
-            <p>${data.descricao}</p>
-          </body>
-          </html>
-        `, { headers: { "Content-Type": "text/html" } });
-      }
+  if (id) {
+    const { data, error } = await supabase
+      .from("tbgen_promocoes")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (data) {
+      title = data.nome || title;
+      description = "As melhores promoções, cupons e descontos das maiores lojas do Brasil - São dezenas de Promoções postadas postadas diariamente!";
+      image = data.imagem || image;
     }
   }
 
-  // Se não for um bot, deixa o Angular lidar com a navegação
-  return context.next();
-};
-
-// Função para buscar o produto no Supabase
-async function fetchProductFromSupabase(id: string) {
-  const SUPABASE_URL = "https://wnbnymobuaogqqnjnoby.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduYm55bW9idWFvZ3Fxbmpub2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgzNDA2ODksImV4cCI6MjA1MzkxNjY4OX0.zAijMlOQwO5T91ssml7ebNLpdfTsjxjX7xrv4zRNHZM"; // ⚠️ Use uma ENV VAR no Netlify para segurança
-
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/tbgen_promocoes?id=eq.${id}`, {
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": `Bearer ${SUPABASE_KEY}`,
-    }
+  return new Response(`
+    <!DOCTYPE html>
+    <html lang="pt">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${title}</title>
+      <meta property="og:title" content="${title}">
+      <meta property="og:description" content="${description}">
+      <meta property="og:image" content="${image}">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="${url.href}">
+    </head>
+    <body>
+      <h1>${title}</h1>
+      <p>${description}</p>
+      <img src="${image}" alt="Imagem de ${title}">
+    </body>
+    </html>
+  `, {
+    headers: { "Content-Type": "text/html" }
   });
-
-  if (!response.ok) return { data: null, error: true };
-  const data = await response.json();
-  return { data: data[0], error: false };
-}
+};
