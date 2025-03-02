@@ -21,6 +21,12 @@
                     @else if(card.marketplace === 'Mercado Livre') {
                         <div mat-card-avatar class="header-image-mercado-livre"></div>
                     }
+                    @else if(card.marketplace === 'Kabum') {
+                        <div mat-card-avatar class="header-image-kabum"></div>
+                    }
+                    @else if(card.marketplace === 'Decathlon') {
+                        <div mat-card-avatar class="header-image-decathlon"></div>
+                    }
                     <div class="header-text">
                         <div>vendido em</div>
                         <div><strong>{{card.marketplace}}</strong></div>

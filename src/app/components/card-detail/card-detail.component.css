@@ -17,6 +17,16 @@
     background-image: url('../../../assets/magazine.png');
     background-size: cover;
   }
+
+.header-image-kabum {
+  background-image: url('../../../assets/kabum.jpeg');
+  background-size: cover;
+}
+
+.header-image-decathlon {
+  background-image: url('../../../assets/decathlon.png');
+  background-size: cover;
+}
   
   .container {
     max-width: 350px; /* Mantém o layout centralizado */
