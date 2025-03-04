@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Context } from "@netlify/edge-functions";
 
 const SUPABASE_URL = "https://wnbnymobuaogqqnjnoby.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduYm55bW9idWFvZ3Fxbmpub2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgzNDA2ODksImV4cCI6MjA1MzkxNjY4OX0.zAijMlOQwO5T91ssml7ebNLpdfTsjxjX7xrv4zRNHZM";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const isBot = (userAgent: string): boolean => {
