@@ -270,8 +270,9 @@ export class RegisterComponent {
       marketplace = 'Kabum';
     } else if (link.includes('decathlon')) {
       marketplace = 'Decathlon';
-    }
-    else {
+    } else if (link.includes('aliexpress')) {
+      marketplace = 'Aliexpress';
+    } else {
         marketplace = 'Desconhecido';
     }
 

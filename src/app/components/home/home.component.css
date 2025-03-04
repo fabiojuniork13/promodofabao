@@ -36,6 +36,11 @@
     background-size: cover;
 }
 
+.header-image-aliexpress {
+    background-image: url('../../../assets/aliexpress.png');
+    background-size: cover;
+}
+
 .flag-entre-no-grupo {
     top: 50%;
     left: 0;

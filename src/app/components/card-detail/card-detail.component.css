@@ -27,6 +27,11 @@
   background-image: url('../../../assets/decathlon.png');
   background-size: cover;
 }
+
+.header-image-aliexpress {
+  background-image: url('../../../assets/aliexpress.png');
+  background-size: cover;
+}
   
   .container {
     max-width: 350px; /* Mantém o layout centralizado */
