@@ -3,7 +3,7 @@
   publish = "dist/web/browser"
 
 [[edge_functions]]
-  path = "/card-meta/*"
+  path = "/product/*"
   function = "meta-tags"
 
 [[redirects]]

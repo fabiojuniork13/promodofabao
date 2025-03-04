@@ -295,7 +295,7 @@ export class RegisterComponent {
         if (result.success) {
             const novoIdPromo = result.id;
             const novaMensagem = this.forWhats;
-            this.forWhats = this.modificarMensagem(novaMensagem, 'https://promodofabin.netlify.app/card/' + novoIdPromo);
+            this.forWhats = this.modificarMensagem(novaMensagem, 'https://promodofabin.netlify.app/product/' + novoIdPromo);
             console.log(this.forWhats);
             this.snackBar.open('Promoção cadastrada com sucesso! ✅', 'Fechar', {
                 duration: 3000,
