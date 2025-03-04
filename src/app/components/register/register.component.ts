@@ -373,6 +373,7 @@ enviarPromoWhats() {
 
   // Definindo destinatários e conteúdo
   const destinatario = ['Promoção do Fabin']; // Exemplo de destinatário
+  // const destinatario = ['4195737521']; // Exemplo de destinatário
   console.log(destinatario);
   console.log(this.forWhats);
 
