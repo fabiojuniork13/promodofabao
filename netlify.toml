@@ -6,12 +6,3 @@
   path = "/card/*"
   function = "meta-tags"
 
-[[redirects]]
-  from = "/card/*"
-  to = "/.netlify/functions/meta-tags"
-  status = 200
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
