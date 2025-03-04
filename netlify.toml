@@ -3,6 +3,10 @@
   publish = "dist/web/browser"
 
 [[edge_functions]]
-  path = "/card/*"
+  path = "/card-meta/*"
   function = "meta-tags"
 
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
