@@ -66,24 +66,11 @@ export default async (request: Request, context: Context): Promise<Response> => 
   }
 
   // Redirecionamento para usuários normais via JavaScript
-  return new Response(
-    `
-      <!DOCTYPE html>
-      <html lang="pt">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Redirecionando...</title>
-        <meta http-equiv="refresh" content="0; url=https://promodofabin.netlify.app/card/${id}">
-        <script>
-          window.location.href = "https://promodofabin.netlify.app/card/${id}";
-        </script>
-      </head>
-      <body>
-        <p>Se não for redirecionado automaticamente, <a href="https://promodofabin.netlify.app/card/${id}">clique aqui</a>.</p>
-      </body>
-      </html>
-    `,
-    { headers: { "Content-Type": "text/html" } }
-  );
+  // Redirecionamento HTTP 302 sem meta refresh
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: `https://promodofabin.netlify.app/card/${id}`
+    }
+  });
 };
