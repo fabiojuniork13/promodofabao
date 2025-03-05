@@ -57,6 +57,7 @@ export class RegisterComponent {
   freteMeli: boolean = false;
   freteRetire: boolean = false;
   fretePoss: boolean = false;
+  internacional: boolean = false;
   enviarImg: boolean = false;
   imageBase64: string | undefined;
 
@@ -149,6 +150,10 @@ export class RegisterComponent {
 
     if (this.menorPreco) {
       resultado += `📉 Menor preço!\n\n`;
+    }
+
+    if(this.internacional) {
+      resultado += `\n✈ *Compra internacional*\n\n`
     }
 
     if (precoOriginal) {
@@ -426,6 +431,7 @@ enviarPromoWhats() {
   } else {
     this.isLoading = false; // Caso não haja dados, encerra o carregamento
   }
+  enviarWhatsButton!.style.display = 'flex';
 }
 
 
@@ -493,6 +499,7 @@ convertImageToBase64(file: File): Promise<string> {
     this.freteRetire = false;
     this.fretePoss = false;
     this.enviarImg = false;
+    this.internacional = false;
     this.imageBase64 = undefined;
     
     this.forWhats = '';
