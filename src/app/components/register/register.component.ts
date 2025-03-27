@@ -153,7 +153,7 @@ export class RegisterComponent {
     }
 
     if(this.internacional) {
-      resultado += `\n✈ *Compra internacional*\n\n`
+      resultado += `✈ *Compra internacional*\n\n`
     }
 
     if (precoOriginal) {
@@ -201,6 +201,22 @@ export class RegisterComponent {
       resultado += `\n\n📲 [NO APP] ${links[0]}\n💻 [NO SITE] ${links[1]}`;
     }
 
+    if (links[0].includes('shopee')) {
+      resultado = '[Shopee] ' + resultado;
+    } else if (links[0].includes('amzn.to')) {
+      resultado = '[Amazon] ' + resultado;
+    } else if (links[0].includes('mercadolivre')) {
+      resultado = '[Mercado Livre] ' + resultado;
+    } else if (links[0].includes('magazineluiza') || links[0].includes('magazine')) {
+      resultado = '[Magalu] ' + resultado;
+    } else if (links[0].includes('kabum')) {
+      resultado = '[Kabum] ' + resultado;
+    } else if (links[0].includes('decathlon')) {
+      resultado = '[Decathlon] ' + resultado;
+    } else if (links[0].includes('aliexpress')) {
+      resultado = '[Aliexpress] ' + resultado;
+    }
+
     if (output) {
       output.textContent = resultado;
       this.forWhats = resultado;
@@ -225,6 +241,8 @@ export class RegisterComponent {
     const alerta = (document.getElementById('alerta') as HTMLInputElement).value;
     const comboCupons = document.getElementById('comboCupons') as HTMLSelectElement;
     const cupomSelecionado: any = comboCupons.textContent;
+
+    const output = document.getElementById('output');
 
     // Aguarda a URL da imagem antes de continuar
     let imageUrl: any;
@@ -308,7 +326,8 @@ export class RegisterComponent {
                 panelClass: ['success-snackbar']
             });
 
-            this.forWhats += ''
+            this.forWhats += '';
+            output!.textContent = this.forWhats;
         } else {
             throw new Error('Erro ao cadastrar promoção.');
         }
@@ -318,6 +337,31 @@ export class RegisterComponent {
             panelClass: ['error-snackbar']
         });
     }
+}
+
+compartilharPromo() {
+  const outputElement = document.getElementById('output');
+  if (this.forWhats) {
+    const textoParaCompartilhar = this.forWhats;
+
+    if (!textoParaCompartilhar) {
+      alert("Nada para compartilhar!");
+      return;
+    }
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Promoção',
+        text: textoParaCompartilhar
+      }).then(() => {
+        console.log('Compartilhamento bem-sucedido!');
+      }).catch((error) => {
+        console.error('Erro ao compartilhar:', error);
+      });
+    } else {
+      alert("Seu navegador não suporta o compartilhamento nativo.");
+    }
+  }
 }
 
 modificarMensagem(mensagem: string, conteudo: string): string {
@@ -723,6 +767,52 @@ convertImageToBase64(file: File): Promise<string> {
               });
             } else {
               this.snackBar.open('Erro ao remover a promoção. 🚨', 'Fechar', {
+                duration: 3000,
+                panelClass: ['error-snackbar'],
+              });
+            }
+        });
+      }
+    });
+  }
+
+  reenviarPromo() {
+    const campoId = (document.getElementById('reenviaPromo') as HTMLInputElement).value;
+
+    if (!campoId) {
+      this.snackBar.open('Campo Id vazio. 🚨', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+      return;
+    }
+
+    const id = parseInt(campoId, 10);
+    if (isNaN(id)) {
+      this.snackBar.open('Id inválido. 🚨', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+      return;
+    }
+
+    // Abre o diálogo de confirmação
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Tem certeza que deseja reenviar a promoção com ID ${id}?` },
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // Se o usuário confirmar, chama o serviço para deletar
+        this.supabaseService.reenviaPromo(id).then(response => {
+          if (response.success) {
+            this.snackBar.open('Promoção inserida na fila com sucesso! ✅', 'Fechar', {
+                duration: 3000,
+                panelClass: ['success-snackbar'],
+              });
+            } else {
+              this.snackBar.open('Erro ao inserir na fila de envio. 🚨', 'Fechar', {
                 duration: 3000,
                 panelClass: ['error-snackbar'],
               });

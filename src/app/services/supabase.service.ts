@@ -79,6 +79,26 @@ async deletePromo(id: number) {
   }
 }
 
+async reenviaPromo(id: number) {
+  try {
+      const { error } = await this.supabase
+          .from('tbgen_messages') // Atualiza a tabela correta
+          .update({ status: 'pendente' }) // Define o status como "pendente"
+          .eq('id', id); // Filtra pelo ID fornecido
+
+      if (error) {
+          console.error('Erro ao atualizar mensagem:', error.message);
+          return { success: false, message: error.message };
+      }
+
+      return { success: true, message: 'Promoção atualizada com sucesso.' };
+
+  } catch (e) {
+      console.error('Erro inesperado:', e);
+      return { success: false, message: 'Erro inesperado ao atualizar promoção.' };
+  }
+}
+
 async insertMessage(data: any) {
   try {
     // Remover o campo 'id' caso já esteja presente no objeto

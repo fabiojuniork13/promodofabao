@@ -64,6 +64,7 @@
         <button id="copiarButton" mat-raised-button color="accent" (click)="copiarTexto()" style="display: none;">Copiar</button>
         <button mat-raised-button color="accent" id="cadastraButton" style="display: none;" (click)="cadastrarPromocao()">Cadastrar Promo</button>
         @if(!isLoading) {
+            <button mat-raised-button color="accent" id="compartilharButton" (click)="compartilharPromo()">Compartilhar</button>
             <button mat-raised-button color="accent" id="enviarWhatsButton" style="display: none;" (click)="enviarPromoWhats()">Enviar Promo WhatsApp</button>
         }
         @if(isLoading) {
@@ -104,6 +105,14 @@
         </mat-form-field>
           
          <button mat-raised-button color="warn" (click)="deletarPromo()">Remover</button>
+
+         <p></p>
+
+         <mat-form-field appearance="fill" class="full-width">
+            <input matInput id="reenviaPromo" placeholder="Insira o Id para reenviar">
+        </mat-form-field>
+          
+         <button mat-raised-button color="warn" (click)="reenviarPromo()">Reenviar</button>
 
     </mat-card-content>
 </mat-card>
