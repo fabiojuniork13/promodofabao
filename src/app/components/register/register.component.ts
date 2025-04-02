@@ -661,21 +661,117 @@ convertImageToBase64(file: File): Promise<string> {
       }
   }
 
+  // async processFile(file: File) {
+  //   this.selectedFile = file; // Armazena o arquivo na variável selectedFile
+  //   const reader = new FileReader();
+  //   reader.onload = (e: any) => {
+  //       this.previewImage = e.target.result;
+  //   };
+  //   reader.readAsDataURL(file);
+
+  //   this.convertImageToBase64(file).then((base64: string) => {
+  //     this.imageBase64 = base64; // Armazena a imagem convertida
+  //     console.log('Imagem em Base64:', this.imageBase64);
+  //   }).catch(error => {
+  //     console.error('Erro ao converter a imagem:', error);
+  //   });
+  // }
+
   async processFile(file: File) {
-    this.selectedFile = file; // Armazena o arquivo na variável selectedFile
+    // 1. Mostra o preview (imagem original)
     const reader = new FileReader();
     reader.onload = (e: any) => {
         this.previewImage = e.target.result;
     };
     reader.readAsDataURL(file);
 
-    this.convertImageToBase64(file).then((base64: string) => {
-      this.imageBase64 = base64; // Armazena a imagem convertida
-      console.log('Imagem em Base64:', this.imageBase64);
-    }).catch(error => {
-      console.error('Erro ao converter a imagem:', error);
-    });
+    try {
+        // 2. Redimensiona para 752x750 (com crop ou fundo branco)
+        const resizedBlob = await this.resizeWithContain(file, 752, 750);
+        
+        // 3. Converte para Base64 (para uso no WhatsApp/etc)
+        this.imageBase64 = await this.convertImageToBase64To(resizedBlob);
+        
+        // 4. Substitui o selectedFile pelo arquivo redimensionado (para o Supabase)
+        this.selectedFile = new File([resizedBlob], file.name, {
+            type: file.type || 'image/jpeg'
+        });
+
+        console.log('Imagem redimensionada e pronta para upload:', this.selectedFile);
+    } catch (error) {
+        console.error('Erro ao processar a imagem:', error);
+    }
   }
+
+  private async resizeWithContain(file: File, targetWidth: number, targetHeight: number): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+            img.src = e.target.result;
+        };
+
+        reader.onerror = error => reject(error);
+
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = targetWidth; // 752px
+            canvas.height = targetHeight; // 750px
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                reject(new Error('Não foi possível obter o contexto 2D'));
+                return;
+            }
+
+            // Preenche o fundo com branco
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Calcula as novas dimensões para "contain" (caber dentro de 752x750 sem cortar)
+            const scale = Math.min(
+                targetWidth / img.width,
+                targetHeight / img.height
+            );
+
+            const newWidth = img.width * scale;
+            const newHeight = img.height * scale;
+
+            // Centraliza a imagem no canvas
+            const offsetX = (targetWidth - newWidth) / 2;
+            const offsetY = (targetHeight - newHeight) / 2;
+
+            ctx.drawImage(
+                img,
+                offsetX, offsetY, // Posição centralizada
+                newWidth, newHeight // Tamanho redimensionado
+            );
+
+            // Converte para Blob (qualidade 90%)
+            canvas.toBlob(
+                blob => blob ? resolve(blob) : reject(new Error('Falha ao criar Blob')),
+                file.type || 'image/jpeg',
+                0.9
+            );
+        };
+
+        img.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
+private convertImageToBase64To(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+          const result = reader.result as string;
+          resolve(result.split(',')[1]); // Retorna apenas a parte base64
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(blob);
+  });
+}
 
   // Faz o upload apenas quando chamar essa função (ex: ao cadastrar a promoção)
   async uploadImage() {
