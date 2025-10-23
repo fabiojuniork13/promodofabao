@@ -9,8 +9,8 @@ export class SupabaseService {
   private supabase: SupabaseClient;
 
   constructor() {
-    const SUPABASE_URL = 'https://wnbnymobuaogqqnjnoby.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduYm55bW9idWFvZ3Fxbmpub2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgzNDA2ODksImV4cCI6MjA1MzkxNjY4OX0.zAijMlOQwO5T91ssml7ebNLpdfTsjxjX7xrv4zRNHZM';
+    const SUPABASE_URL = 'https://hvrxdfodmwsowsmjwhlz.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2cnhkZm9kbXdzb3dzbWp3aGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMjgwNjAsImV4cCI6MjA3NjgwNDA2MH0.z8lZRQUaqCDwWhNFan_2lie-gIgfQMx2RICFKCh0sL4';
 
     this.supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   }
