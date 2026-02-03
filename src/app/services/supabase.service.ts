@@ -78,7 +78,7 @@ async deletePromo(id: number) {
       return { success: false, message: 'Erro inesperado ao deletar promoção.' };
   }
 }
-
+ 
 async reenviaPromo(id: number) {
   try {
       const { error } = await this.supabase
