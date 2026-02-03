@@ -5,6 +5,7 @@ const SUPABASE_URL = "https://vlgdnozjeqtqxvzjyttp.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsZ2Rub3pqZXF0cXh2emp5dHRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgyNDM0MzAsImV4cCI6MjA4MzgxOTQzMH0.ujMSvxSgWmbaa6bakYKullbnDOWrmy2jj4wlqNbv7ao";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+
 const isBot = (userAgent: string): boolean => {
   const bots = /bot|crawl|spider|facebook|whatsapp|twitter|linkedin/i;
   return bots.test(userAgent);
