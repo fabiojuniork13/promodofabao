@@ -58,5 +58,5 @@ export default async (request: Request, context: Context): Promise<Response> => 
   }
 
   // 🚀 Redireciona usuários para o componente real
-  return Response.redirect(`https://promodofabin.netlify.app/card/${id}`, 301);
+  return Response.redirect(`https://promodofabin.netlify.app/card/${id}`, 302);
 };
