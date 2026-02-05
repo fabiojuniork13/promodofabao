@@ -44,7 +44,7 @@ export default async (request: Request, context: Context): Promise<Response> => 
         <meta property="og:image" content="${image}">
         <meta property="og:image:width" content="752">
         <meta property="og:image:height" content="750">
-        <meta property="og:type" content="website">
+        <meta property="og:type" content="product">
         <meta property="og:url" content="${url.href}">
       </head>
       <body>
