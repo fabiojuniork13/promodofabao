@@ -60,7 +60,7 @@
                         @if(card.paymentmethod !== '') {
                             <p class="pagamento">{{ card.paymentmethod }}</p>
                         }
-                        @if(card.alert !== '') {
+                        @if(card.alert) {
                             <div class="alerta">
                                 <mat-icon>warning</mat-icon>
                                 {{ card.alert }}
