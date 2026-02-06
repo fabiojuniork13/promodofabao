@@ -61,7 +61,7 @@
                         }
                     </div>
                 </mat-card-content>
-                @if(card.coupon !== "") {
+                @if(card.coupon) {
                     <mat-card-actions class="cupom-container">
                         <div class="cupom-content">
                             <div class="cupom-text">
@@ -78,7 +78,7 @@
                     </mat-card-actions>
                 }
                 <mat-card-actions>
-                    @if(card.coupon !== "") {
+                    @if(card.coupon) {
                         <button mat-button (click)="openDiscountDialog(card)">
                             <span>PEGAR PROMOÇÃO</span>
                             <mat-icon>open_in_new</mat-icon>
