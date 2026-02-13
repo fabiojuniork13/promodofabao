@@ -51,13 +51,13 @@
                 <mat-card-content (click)="navigateToDetail(card.id)" >
                     <div class="preco-container">
                         <p></p>
-                        @if(card.oldprice !== '') {
+                        @if(card.oldprice) {
                             <p class="label">De:</p>
                             <p class="preco-antigo"><s>{{ card.oldprice }}</s></p>
                         }
                         <p class="label">Por:</p>
                         <p class="preco-novo">{{ card.newprice }}</p>
-                        @if(card.paymentmethod !== '') {
+                        @if(card.paymentmethod) {
                             <p class="pagamento">{{ card.paymentmethod }}</p>
                         }
                         @if(card.alert) {
