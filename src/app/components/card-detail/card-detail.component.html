@@ -61,7 +61,7 @@
                         }
                     </div>
                 </mat-card-content>
-                @if(card.coupon) {
+                <!-- @if(card.coupon) {
                     <mat-card-actions class="cupom-container">
                         <div class="cupom-content">
                             <div class="cupom-text">
@@ -74,6 +74,27 @@
                                     <span> {{ isCopied ? 'Copiado' : 'Copiar' }} </span>
                                 </div>
                             </div>
+                        </div>
+                    </mat-card-actions>
+                } -->
+                @if(card.coupon) {
+                    @let data = couponData; <mat-card-actions class="cupom-container">
+                        <div class="cupom-content">
+                        <div class="cupom-text">
+                            <span class="cupom-label">Cupom de desconto:</span>
+                            <strong class="cupom-display-text">{{ data.cleanText || 'Clique abaixo para resgatar' }}</strong>
+                        </div>
+
+                        <div mat-button class="action-button" [class.is-link]="data.hasUrl" (click)="handleCouponAction()">
+                            <div class="copy-content">
+                            <mat-icon>
+                                {{ data.hasUrl ? 'open_in_new' : (isCopied ? 'check' : 'content_copy') }}
+                            </mat-icon>
+                            <span>
+                                {{ data.hasUrl ? 'Clique aqui' : (isCopied ? 'Copiado' : 'Copiar') }}
+                            </span>
+                            </div>
+                        </div>
                         </div>
                     </mat-card-actions>
                 }

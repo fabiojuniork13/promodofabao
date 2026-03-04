@@ -66,6 +66,31 @@ export class CardDetailComponent implements OnInit {
     });
   }
 
+  get couponData() {
+    let text = this.card.coupon || '';
+    // Regex simples para capturar URLs que começam com http ou https
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const matches = text.match(urlRegex);
+
+    text = text.replace(urlRegex, '').replace("Resgate o", "").replace("Resgate", "").trim();
+    return {
+      hasUrl: !!matches,
+      url: matches ? matches[0] : null,
+      // Removemos a URL do texto para mostrar apenas a frase "Resgate o cupom..."
+      cleanText: text.replace(urlRegex, '').trim()
+    };
+  }
+
+  // Função para o botão
+  handleCouponAction() {
+    const data = this.couponData;
+    if (data.hasUrl) {
+      window.open(data.url!, '_blank');
+    } else {
+      this.copiarCupom(this.card.coupon);
+    }
+  }
+
   getTimeAgo(postedAt: string): string {
     const now = new Date();
     const postedDate = new Date(postedAt + "Z");

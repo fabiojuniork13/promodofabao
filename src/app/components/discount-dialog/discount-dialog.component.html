@@ -13,9 +13,17 @@
     <p class="attention">Atenção!</p>
     <p class="text-cupom">Necessário uso do cupom!</p>
     <p class="instruction"><strong>Passo a Passo!</strong></p>
-    <p>Você pode inserir o cupom no campo disponível no carrinho ou na página de pagamento.</p>
+    @let info = getCouponInfo(card.coupon);
+    @if(!info.isUrl) {
+        <p>Você pode inserir o cupom no campo disponível no carrinho ou na página de pagamento.</p>
+    }
+    @else {
+        <p>Você precisa ativar o cupom na tela de cupons para chegar ao valor. Clique no local indicado para ser direcionado para a página. Após ativar, retorne aqui e clique em "PEGAR PROMOÇÃO"</p>
+    }
+    
+    
     <mat-card-actions class="cupom-container">
-        <div class="cupom-content">
+        <!-- <div class="cupom-content">
             <div class="cupom-text">
                 <span class="cupom-label">cupom de desconto:</span>
                 <strong class="cupom-code">{{card.coupon}}</strong>
@@ -24,6 +32,25 @@
                 <div class="copy-content">
                     <mat-icon>{{ isCopied ? 'check' : 'content_copy' }}</mat-icon>
                     <span> {{ isCopied ? 'Copiado' : 'Copiar' }} </span>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="cupom-content">
+            <div class="cupom-text">
+                <span class="cupom-label">cupom de desconto:</span>
+                <strong class="cupom-code" [title]="info.text">{{ info.text }}</strong>
+            </div>
+            
+            <div mat-button 
+                class="action-button" 
+                [class.is-link]="info.isUrl"
+                (click)="handleCouponAction(card)">
+                <div class="copy-content">
+                    <mat-icon>
+                        {{ info.isUrl ? 'open_in_new' : (isCopied ? 'check' : 'content_copy') }}
+                    </mat-icon>
+                    <span> {{ info.isUrl ? 'Clique aqui' : (isCopied ? 'Copiado' : 'Copiar') }} </span>
                 </div>
             </div>
         </div>

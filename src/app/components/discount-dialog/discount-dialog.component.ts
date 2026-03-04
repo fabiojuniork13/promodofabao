@@ -28,6 +28,36 @@ export class DiscountDialogComponent {
     });
   }
 
+  getCouponInfo(coupon: string) {
+    if (!coupon) return { isUrl: false, text: '' };
+
+    // Regex para detectar URLs
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urls = coupon.match(urlRegex);
+
+    if (urls) {
+      // Se for URL, limpamos o texto removendo o link e palavras repetitivas
+      const cleanText = coupon.replace(urlRegex, '').replace("Resgate o", "").replace("Resgate", "").trim();
+      return { 
+        isUrl: true, 
+        url: urls[0], 
+        text: cleanText || 'Link promocional' 
+      };
+    }
+
+    return { isUrl: false, text: coupon };
+  }
+
+  // Melhore a função de ação para lidar com os dois casos
+  handleCouponAction(card: any) {
+    const info = this.getCouponInfo(card.coupon);
+    if (info.isUrl) {
+      window.open(info.url, '_blank');
+    } else {
+      this.copiarCupom(card.coupon);
+    }
+  }
+
   openLink(link: string) {
     window.open(link, '_blank');
     this.dialogRef.close();
