@@ -76,10 +76,16 @@ export class HomeComponent {
     // Regex para detectar URLs
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const urls = coupon.match(urlRegex);
+    let cleanText = "";
 
     if (urls) {
       // Se for URL, limpamos o texto removendo o link e palavras repetitivas
-      const cleanText = coupon.replace(urlRegex, '').replace("Resgate o", "").replace("Resgate", "").trim();
+      if(coupon.includes("Resgate todos os")) {
+        cleanText = coupon.replace(urlRegex, '').trim();
+      } else {
+        cleanText = coupon.replace(urlRegex, '').replace("Resgate o", "").replace("Resgate", "").trim();
+      }
+      
       return { 
         isUrl: true, 
         url: urls[0], 

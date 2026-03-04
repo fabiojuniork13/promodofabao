@@ -72,7 +72,11 @@ export class CardDetailComponent implements OnInit {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const matches = text.match(urlRegex);
 
-    text = text.replace(urlRegex, '').replace("Resgate o", "").replace("Resgate", "").trim();
+    if(text.includes("Resgate todos os")) {
+      text = text.replace(urlRegex, '').trim();  
+    } else {
+      text = text.replace(urlRegex, '').replace("Resgate o", "").replace("Resgate", "").trim();
+    }
     return {
       hasUrl: !!matches,
       url: matches ? matches[0] : null,
