@@ -180,7 +180,7 @@ export default async (request: Request, context: Context): Promise<Response> => 
   }
 
   // Apenas usuários reais são redirecionados
-  return Response.redirect(`https://promodofabin.netlify.app/card/${id}`, 302);
+  return Response.redirect(`https://promodofabin.netlify.app/card/${id}`, 301);
 };
 
 function escapeHtml(unsafe: string): string {
