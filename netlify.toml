@@ -10,3 +10,9 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Headers específicos para bots
+[[headers]]
+  for = "/product/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
