@@ -89,7 +89,7 @@ export default async (request: Request, context: Context): Promise<Response> => 
   // SEMPRE retornar HTML para bots, SEM redirecionamento
   if (isCrawler) {
     let title = "Meu Site";
-    let description = "Descrição padrão do site.";
+    let description = "As melhores promoções, cupons e descontos das maiores lojas do Brasil!";
     let image = "https://seusite.com/default.jpg";
 
     // Verificar cache primeiro
