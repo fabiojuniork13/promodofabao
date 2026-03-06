@@ -10,7 +10,7 @@ const isBot = (userAgent: string): boolean => {
   return bots.test(userAgent);
 };
 
-export default async (request: Request, context: Context): Promise<Response> => {
+export default async (request: Request, context: Context): Promise<Response | void | undefined> => {
   const url = new URL(request.url);
   const pathSegments = url.pathname.split("/");
   const id = pathSegments[pathSegments.length - 1];
@@ -54,10 +54,14 @@ export default async (request: Request, context: Context): Promise<Response> => 
         <img src="${image}" alt="Imagem de ${title}">
       </body>
       </html>`,
-      { headers: { "Content-Type": "text/html" } }
+      // { headers: { "Content-Type": "text/html" } }
+      { headers: { "Content-Type": "text/html; charset=UTF-8" } }
     );
   }
 
   // 🚀 Redireciona usuários para o componente real
-  return Response.redirect(`https://promodofabin.netlify.app/card/${id}`, 302);
+  // return Response.redirect(`https://promodofabin.netlify.app/card/${id}`, 302);
+  return;
 };
+
+export const config = { path: "/product/*" };
