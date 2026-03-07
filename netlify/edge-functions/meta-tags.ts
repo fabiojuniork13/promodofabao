@@ -23,11 +23,22 @@ export default async (request: Request, context: Context): Promise<Response | vo
   let image = "https://seusite.com/default.jpg";
 
   if (id) {
-    const { data } = await supabase.from("tbgen_promocoes").select("*").eq("id", id).single();
-    if (data) {
-      title = data.subtitle || title;
+    // const { data } = await supabase.from("tbgen_promocoes").select("*").eq("id", id).single();
+    // const { data } = await supabase.from("tbgen_promocoes").select("subtitle, image").eq("id", Number(id)).single();
+    const { data, error } = await supabase.rpc("get_promo_preview", {
+      promo_id: Number(id)
+    });
+    
+    // if (data) {
+    //   title = data.subtitle || title;
+    //   description = "As melhores promoções, cupons e descontos das maiores lojas do Brasil!";
+    //   image = data.image || image;
+    // }
+
+    if (!error && data && data.length > 0) {
+      title = data[0].subtitle || title;
       description = "As melhores promoções, cupons e descontos das maiores lojas do Brasil!";
-      image = data.image || image;
+      image = data[0].image || image;
     }
   }
 
@@ -55,7 +66,10 @@ export default async (request: Request, context: Context): Promise<Response | vo
       </body>
       </html>`,
       // { headers: { "Content-Type": "text/html" } }
-      { headers: { "Content-Type": "text/html; charset=UTF-8" } }
+      { headers: { 
+        "Content-Type": "text/html; charset=UTF-8",
+        "Cache-Control": "public, max-age=600"
+       } }
     );
   }
 
