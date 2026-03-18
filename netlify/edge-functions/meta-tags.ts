@@ -39,6 +39,22 @@ export default async (request: Request, context: Context): Promise<Response | vo
       title = data[0].subtitle || title;
       description = "As melhores promoções, cupons e descontos das maiores lojas do Brasil!";
       image = data[0].image || image;
+
+      // 🔥 O PULO DO GATO: Baixar a imagem e converter para Base64
+      try {
+        const imageRes = await fetch(image);
+        const arrayBuffer = await imageRes.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        
+        // Converte o buffer para string Base64 (Sintaxe Deno/Edge)
+        const base64String = btoa(String.fromCharCode(...uint8Array));
+        
+        // Substituímos a URL pelo Data URI
+        image = `data:image/png;base64,${base64String}`;
+      } catch (e) {
+        console.error("Erro ao converter imagem", e);
+        // Se der erro, ele mantém a URL original como fallback
+      }
     }
   }
 
@@ -53,10 +69,10 @@ export default async (request: Request, context: Context): Promise<Response | vo
         <meta property="og:title" content="${title}">
         <meta property="og:description" content="${description}">
         <meta property="og:image" content="${image}">
-        <meta property="og:image:width" content="752">
+        <meta property="og:image:width" content="750">
         <meta property="og:image:height" content="750">
         <meta property="og:type" content="website">
-        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:type" content="image/jpg">
         <meta property="og:url" content="${url.href}">
       </head>
       <body>
