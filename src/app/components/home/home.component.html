@@ -55,8 +55,10 @@
                             <p class="label">De:</p>
                             <p class="preco-antigo"><s>{{ card.oldprice }}</s></p>
                         }
-                        <p class="label">Por:</p>
-                        <p class="preco-novo">{{ card.newprice }}</p>
+                        @if(card.newprice) {
+                            <p class="label">Por:</p>
+                            <p class="preco-novo">{{ card.newprice }}</p>
+                        }
                         @if(card.paymentmethod) {
                             <p class="pagamento">{{ card.paymentmethod }}</p>
                         }
